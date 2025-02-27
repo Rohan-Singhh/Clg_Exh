@@ -28,16 +28,22 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit({
+    console.log('Form data before submission:', formData) // Debug log
+    
+    // Convert string values to numbers
+    const submissionData = {
       age: Number(formData.age),
       height: Number(formData.height),
       weight: Number(formData.weight),
       gender: formData.gender,
       activityLevel: formData.activityLevel,
-      symptoms: formData.symptoms,
+      symptoms: formData.symptoms || '',
       sleepHours: Number(formData.sleepHours),
       waterIntake: Number(formData.waterIntake)
-    })
+    }
+    
+    console.log('Processed submission data:', submissionData) // Debug log
+    onSubmit(submissionData)
   }
 
   const inputClasses = "w-full bg-cyber-dark/50 border-2 border-cyber-primary rounded-lg p-3 text-cyber-light placeholder-cyber-light/50 focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent transition-all duration-300 backdrop-blur-sm shadow-neon"

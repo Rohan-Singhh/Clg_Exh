@@ -55,34 +55,34 @@ function App() {
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (data: HealthData) => {
-    setLoading(true);
-    setError(null);
-
+    setLoading(true)
+    setError(null)
     try {
-        const response = await fetch("http://localhost:3000/api/analyze", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-            credentials: "include", // Add this if you need to send cookies/auth tokens
-        });
+      console.log('Sending data:', data) // Debug log
+      const response = await fetch('http://localhost:3000/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
 
-        if (!response.ok) {
-            throw new Error("Failed to analyze health data");
-        }
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to analyze health data')
+      }
 
-        const analysisData = await response.json();
-        setHealthData(data);
-        setAnalysis(analysisData);
+      const analysisData = await response.json()
+      console.log('Received analysis:', analysisData) // Debug log
+      setHealthData(data)
+      setAnalysis(analysisData)
     } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
-        console.error("Error:", err);
+      console.error('Error details:', err) // Debug log
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
-        setLoading(false);
+      setLoading(false)
     }
-};
-
+  }
 
   return (
     <div className="min-h-screen bg-cyber-dark text-cyber-light overflow-hidden relative">
